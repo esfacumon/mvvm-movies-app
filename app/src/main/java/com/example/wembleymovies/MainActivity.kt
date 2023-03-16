@@ -30,9 +30,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
-        val navController = findNavController(R.id.nav_host_fragment)
+        // val navController = findNavController(R.id.nav_host_fragment)
         // TODO: Config navigation between tabs
-        findViewById<BottomNavigationView>(R.id.nav_menu).setupWithNavController(navController)
+        // findViewById<BottomNavigationView>(R.id.nav_menu).setupWithNavController(navController)
 
         apiPopularMovies()
         apiSearchMovies()
