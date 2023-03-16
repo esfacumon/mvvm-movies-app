@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">WembleyMovies</string>
+    <string name="text_list_tab">Búsqueda</string>
+    <string name="text_fav_tab">Favoritas</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
