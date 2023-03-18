@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
 import android.util.Log
+import androidx.core.view.get
 
 import com.example.wembleymovies.data.api.ApiConstants.API_KEY
 import com.example.wembleymovies.data.api.ApiService
@@ -16,29 +17,37 @@ import retrofit2.Callback
 import retrofit2.Response
 
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 
 class MainActivity : AppCompatActivity() {
 
     private val apiService: ApiService by lazy { ApiModule.provideApiService() } // lazy init for optimization
-    // private val apiService: ApiService = ApiModule.provideApiService() without lazy init
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+//        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+//        val navController =  navHostFragment.navController
 
-        // val navController = findNavController(R.id.nav_host_fragment)
-        // TODO: Config navigation between tabs
+        val navController = this.findNavController(R.id.nav_host_fragment)
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_menu)
+
+        bottomNavigationView.setupWithNavController(navController)
+
         // findViewById<BottomNavigationView>(R.id.nav_menu).setupWithNavController(navController)
 
         apiPopularMovies()
         apiSearchMovies()
     }
 
-    fun apiPopularMovies() {
+    private fun apiPopularMovies() {
         apiService.getPopularMovies(API_KEY).enqueue(object : Callback<MovieResponse> {
             override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
                 if (response.isSuccessful) {
@@ -59,7 +68,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun apiSearchMovies() {
+    private fun apiSearchMovies() {
         apiService.searchMovies(API_KEY, "Shrek").enqueue(object : Callback<MovieResponse> {
             override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
                 if (response.isSuccessful) {

@@ -18,6 +18,9 @@ data class Movie(
     @SerializedName("vote_average")
     val voteAverage: Double,
 
+    @SerializedName("overview")
+    val overview: String,
+
     @SerializedName("poster_path")
     val posterPath: String? // could be null
 )
