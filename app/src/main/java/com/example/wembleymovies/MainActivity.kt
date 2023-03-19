@@ -33,15 +33,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-//        val navController =  navHostFragment.navController
-
         val navController = this.findNavController(R.id.nav_host_fragment)
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_menu)
 
         bottomNavigationView.setupWithNavController(navController)
-
-        // findViewById<BottomNavigationView>(R.id.nav_menu).setupWithNavController(navController)
 
         apiPopularMovies()
         apiSearchMovies()
@@ -74,7 +69,7 @@ class MainActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val movieReponse: MovieResponse? = response.body()
                     val movies: List<Movie>? = response.body()?.movies
-                    Log.d("API_TEST", "Encontradas ${movieReponse?.totalResults} peliculas:  $movies")
+                    Log.d("API_TEST", "${movieReponse?.totalResults} movies found:  $movies")
                 } else {
                     Log.e("API_TEST", "Error al obtener películas populares: ${response.code()}")
                 }

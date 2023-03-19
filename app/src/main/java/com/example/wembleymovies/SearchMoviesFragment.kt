@@ -6,11 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wembleymovies.data.api.ApiConstants
 import com.example.wembleymovies.data.api.ApiModule
 import com.example.wembleymovies.data.api.ApiService
+import com.example.wembleymovies.data.managers.FavoritesManager
 import com.example.wembleymovies.data.model.Movie
 import com.example.wembleymovies.data.model.MovieAdapter
 import com.example.wembleymovies.data.model.MovieResponse
@@ -67,12 +69,10 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
                 if (response.isSuccessful) {
                     val movieResponse: MovieResponse? = response.body()
                     movieResponse?.movies?.let { movies.addAll(it) } // adds all movies got from requests to movies if it's not null
-                    val btnFav = view.findViewById<ImageButton>(R.id.image_btn_fav)
 
-                    btnFav.setOnClickListener{
-
-                    }
-                    movieAdapter = MovieAdapter(movies)
+                    val favoritesManager = FavoritesManager(requireContext())
+                    
+                    movieAdapter = MovieAdapter(movies, favoritesManager)
                     recyclerView.adapter = movieAdapter
                 }
             }
@@ -83,22 +83,6 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
         })
     }
 
-    private fun isFav(movie: Movie): Boolean {
-        val favMovies: MutableSet<String>? = loadFavMovies()
-        if (favMovies != null) {
-            for (favMovie in favMovies) {
-                if (movie.id == favMovie.toInt()) {
-                    return true
-                }
-            }
-        }
-        return false
-    }
-
-    private fun loadFavMovies(): MutableSet<String>? {
-        // val sp = PreferenceManager.getDefaultSharedPreferences(this)
-        // return sp.getStringSet("favSatellites", null)
-    }
 
     private fun getPopularMovies() {
         apiService.getPopularMovies(ApiConstants.API_KEY).enqueue(object : Callback<MovieResponse> {

@@ -43,7 +43,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/movie_title" />
 
-        <Button
+        <ImageButton
             android:id="@+id/image_btn_fav"
             android:layout_width="38dp"
             android:layout_height="38dp"

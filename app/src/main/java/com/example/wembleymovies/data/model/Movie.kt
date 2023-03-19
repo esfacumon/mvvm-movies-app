@@ -3,7 +3,7 @@ package com.example.wembleymovies.data.model
 import com.google.gson.annotations.SerializedName
 
 /**
- * Represents movie data we want to display in our list
+ * Represents movie data we want to use
  */
 data class Movie(
     @SerializedName("id")
