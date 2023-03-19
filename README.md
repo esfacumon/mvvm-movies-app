@@ -1,6 +1,5 @@
 <a name="readme-top"></a>
 
-[LinkedIn](https://www.linkedin.com/in/facundo-a-sierra-rodr%C3%ADguez-b94429210)
 
 
 <!-- PROJECT LOGO -->
@@ -34,20 +33,8 @@
   </ol>
 </details>
 
-### Built With
-
-* [![Next][Next.js]][Next-url]
-* [![React][React.js]][React-url]
-* [![Vue][Vue.js]][Vue-url]
-* [![Angular][Angular.io]][Angular-url]
-* [![Svelte][Svelte.dev]][Svelte-url]
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![JQuery][JQuery.com]][JQuery-url]
-
-<!-- CONTACT -->
 ## Contact
 
-Facundo A. Sierra Rodríguez - facundosierrar@gmail.com
+Facundo A. Sierra Rodríguez - facundosierrar@gmail.com - [LinkedIn](https://www.linkedin.com/in/facundo-a-sierra-rodr%C3%ADguez-b94429210)
 
 Project Link: [https://github.com/esfacumon/mvvm-movies-app](https://github.com/esfacumon/mvvm-movies-app)
