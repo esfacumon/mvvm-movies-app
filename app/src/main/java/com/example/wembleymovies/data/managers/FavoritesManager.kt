@@ -7,7 +7,7 @@ import com.example.wembleymovies.data.model.Movie
 import com.google.gson.Gson
 
 /**
- * Manages SharedPreferences to save favorite movies. Uses Gson to save all data class in JSON format string.
+ * Manages SharedPreferences to save favorite movies. Uses Gson to save all data class in JSON format string
  */
 class FavoritesManager(context: Context) {
 
