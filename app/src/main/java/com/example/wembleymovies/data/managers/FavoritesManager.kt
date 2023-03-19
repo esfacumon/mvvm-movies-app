@@ -10,6 +10,7 @@ import com.google.gson.Gson
  * Manages SharedPreferences to save favorite movies. Uses Gson to save all data class in JSON format string.
  */
 class FavoritesManager(context: Context) {
+
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences("favorite_movies", Context.MODE_PRIVATE)
     private val gson = Gson()
 
@@ -19,13 +20,16 @@ class FavoritesManager(context: Context) {
         sharedPreferences.edit().putString(movie.id.toString(), movieJson).apply()
     }
 
+
     fun removeFavorite(movie: Movie) {
         sharedPreferences.edit().remove(movie.id.toString()).apply()
     }
 
+
     fun isFavorite(movie: Movie): Boolean {
         return sharedPreferences.contains(movie.id.toString())
     }
+
 
     fun getFavoriteMovies(): MutableList<Movie> {
         val favoriteMovies = mutableListOf<Movie>()

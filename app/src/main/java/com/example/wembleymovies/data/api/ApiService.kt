@@ -1,8 +1,7 @@
 package com.example.wembleymovies.data.api
 
-import com.example.wembleymovies.data.model.ConfigurationResponse
 import com.example.wembleymovies.data.model.MovieResponse
-import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -16,7 +15,7 @@ interface ApiService {
      * @return MovieResponse list of popular movies
      */
     @GET("movie/popular")
-    fun getPopularMovies(@Query("api_key") apiKey: String): Call<MovieResponse>
+    suspend fun getPopularMovies(@Query("api_key") apiKey: String): Response<MovieResponse>
 
 
     /**
@@ -26,19 +25,8 @@ interface ApiService {
      * @return List of movies which contains query string.
      */
     @GET("search/movie")
-    fun searchMovies(
+    suspend fun searchMovies(
         @Query("api_key") apiKey: String,
         @Query("query") query: String
-    ): Call<MovieResponse>
-
-    /**
-     * Gets list of movies.
-     * @param apiKey
-     * @param query Search string.
-     * @return List of movies which contains query string.
-     */
-    @GET("configuration")
-    fun searchMovies(
-        @Query("api_key") apiKey: String
-    ): Call<ConfigurationResponse>
+    ): Response<MovieResponse>
 }

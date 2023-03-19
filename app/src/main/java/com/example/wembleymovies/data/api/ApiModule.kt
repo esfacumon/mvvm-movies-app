@@ -1,7 +1,6 @@
 package com.example.wembleymovies.data.api
 
 import com.example.wembleymovies.data.api.ApiConstants.URI
-import com.example.wembleymovies.data.api.ApiService
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -22,7 +21,7 @@ object ApiModule {
 
 
     /**
-     * @return Retrofit instance based on our configuration (URI). Uses Gsonconverter to convert from JSON to Kotlin object.
+     * @return Retrofit instance based on our configuration (URI). Uses Gson to convert from JSON to Kotlin object.
      */
     private fun provideRetrofit(client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
