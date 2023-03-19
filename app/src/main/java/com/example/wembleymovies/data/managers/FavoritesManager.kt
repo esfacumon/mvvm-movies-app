@@ -14,6 +14,7 @@ class FavoritesManager(context: Context) {
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences("favorite_movies", Context.MODE_PRIVATE)
     private val gson = Gson()
 
+
     fun saveFavorite(movie: Movie) {
         movie.timestamp = System.currentTimeMillis()
         val movieJson = gson.toJson(movie)
