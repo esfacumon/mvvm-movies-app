@@ -14,6 +14,7 @@ class FavoritesManager(context: Context) {
     private val gson = Gson()
 
     fun saveFavorite(movie: Movie) {
+        movie.timestamp = System.currentTimeMillis()
         val movieJson = gson.toJson(movie)
         sharedPreferences.edit().putString(movie.id.toString(), movieJson).apply()
     }
@@ -26,7 +27,7 @@ class FavoritesManager(context: Context) {
         return sharedPreferences.contains(movie.id.toString())
     }
 
-    fun getFavoriteMovies(): List<Movie> {
+    fun getFavoriteMovies(): MutableList<Movie> {
         val favoriteMovies = mutableListOf<Movie>()
         sharedPreferences.all.forEach { (key, value) ->
             if (value is String) {

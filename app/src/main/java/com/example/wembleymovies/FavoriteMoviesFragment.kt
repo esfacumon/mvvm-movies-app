@@ -21,11 +21,12 @@ private const val ARG_PARAM2 = "param2"
  * Use the [FavoriteMoviesFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class FavoriteMoviesFragment : Fragment(R.layout.fragment_search_movies) {
+class FavoriteMoviesFragment : Fragment(R.layout.fragment_search_movies), MovieAdapter.OnFavoriteClickListener {
 
 
     private lateinit var movieAdapter: MovieAdapter
     private lateinit var recyclerView: RecyclerView
+    private lateinit var favoriteMovies: MutableList<Movie>
     private var movies: MutableList<Movie> = mutableListOf()
 
     // TODO: Rename and change types of parameters
@@ -60,13 +61,13 @@ class FavoriteMoviesFragment : Fragment(R.layout.fragment_search_movies) {
      */
     private fun loadFavoriteMovies() {
         val favoritesManager = FavoritesManager(requireContext())
-        val favoriteMovies = favoritesManager.getFavoriteMovies()
+        favoriteMovies = favoritesManager.getFavoriteMovies().sortedBy { it.timestamp }.reversed().toMutableList()
 
         if (favoriteMovies.isEmpty()) {
-            // handle error
+            // handle error maybe show TextView "no movies marked as favourite"
             return
         }
-        movieAdapter = MovieAdapter(favoriteMovies, favoritesManager)
+        movieAdapter = MovieAdapter(favoriteMovies, favoritesManager, this)
         recyclerView.adapter = movieAdapter
 
         Log.d("favMovies", favoriteMovies.map { movie -> (movie.id.toString() + movie.title) }.toString())
@@ -90,5 +91,15 @@ class FavoriteMoviesFragment : Fragment(R.layout.fragment_search_movies) {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    override fun onFavoriteClick(movie: Movie, isFavorite: Boolean) {
+        if (isFavorite) {
+            favoriteMovies.add(movie)
+        }
+        else {
+            favoriteMovies.remove(movie)
+        }
+        movieAdapter.notifyDataSetChanged()
     }
 }

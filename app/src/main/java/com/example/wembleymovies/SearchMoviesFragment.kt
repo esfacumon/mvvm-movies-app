@@ -72,7 +72,9 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
 
                     val favoritesManager = FavoritesManager(requireContext())
                     
-                    movieAdapter = MovieAdapter(movies, favoritesManager)
+                    movieAdapter = MovieAdapter(movies, favoritesManager, object : MovieAdapter.OnFavoriteClickListener {
+                        override fun onFavoriteClick(movie: Movie, isFavorite: Boolean) { /* empty function in this case */}
+                    })
                     recyclerView.adapter = movieAdapter
                 }
             }

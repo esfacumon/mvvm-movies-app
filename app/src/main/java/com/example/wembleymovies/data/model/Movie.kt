@@ -1,6 +1,7 @@
 package com.example.wembleymovies.data.model
 
 import com.google.gson.annotations.SerializedName
+import java.sql.Timestamp
 
 /**
  * Represents movie data we want to use
@@ -22,5 +23,7 @@ data class Movie(
     val overview: String,
 
     @SerializedName("poster_path")
-    val posterPath: String? // could be null
+    val posterPath: String?, // could be null
+
+    var timestamp: Long? = null
 )
