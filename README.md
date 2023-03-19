@@ -1,6 +1,6 @@
 <a name="readme-top"></a>
 
-[![LinkedIn][linkedin-shield]][linkedin-url]
+[LinkedIn](https://www.linkedin.com/in/facundo-a-sierra-rodr%C3%ADguez-b94429210)
 
 
 <!-- PROJECT LOGO -->
@@ -33,6 +33,17 @@
     <li><a href="#contact">Contact</a></li>
   </ol>
 </details>
+
+### Built With
+
+* [![Next][Next.js]][Next-url]
+* [![React][React.js]][React-url]
+* [![Vue][Vue.js]][Vue-url]
+* [![Angular][Angular.io]][Angular-url]
+* [![Svelte][Svelte.dev]][Svelte-url]
+* [![Laravel][Laravel.com]][Laravel-url]
+* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
+* [![JQuery][JQuery.com]][JQuery-url]
 
 <!-- CONTACT -->
 ## Contact
