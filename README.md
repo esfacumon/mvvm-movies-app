@@ -11,6 +11,9 @@
   <p align="center">
     Android Studio app using Kotlin and TMDB API.
   </p>
+
+  <p align="center">
+    Facundo A. Sierra Rodríguez - facundosierrar@gmail.com - [LinkedIn](https://www.linkedin.com/in/facundo-a-sierra-rodr%C3%ADguez-b94429210)
+  </p>
 </div>
 
-Facundo A. Sierra Rodríguez - facundosierrar@gmail.com - [LinkedIn](https://www.linkedin.com/in/facundo-a-sierra-rodr%C3%ADguez-b94429210)
