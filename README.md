@@ -13,7 +13,8 @@
   </p>
 
   <p align="center">
-    Facundo A. Sierra Rodríguez - facundosierrar@gmail.com - [LinkedIn](https://www.linkedin.com/in/facundo-a-sierra-rodr%C3%ADguez-b94429210)
+    Facundo A. Sierra Rodríguez
   </p>
 </div>
 
+facundosierrar@gmail.com - [LinkedIn](https://www.linkedin.com/in/facundo-a-sierra-rodr%C3%ADguez-b94429210)
