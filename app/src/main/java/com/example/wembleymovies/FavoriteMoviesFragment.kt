@@ -27,7 +27,6 @@ class FavoriteMoviesFragment : Fragment(R.layout.fragment_search_movies), MovieA
     private lateinit var movieAdapter: MovieAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var favoriteMovies: MutableList<Movie>
-    private var movies: MutableList<Movie> = mutableListOf()
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -94,12 +93,16 @@ class FavoriteMoviesFragment : Fragment(R.layout.fragment_search_movies), MovieA
     }
 
     override fun onFavoriteClick(movie: Movie, isFavorite: Boolean) {
+        val pos: Int
         if (isFavorite) {
             favoriteMovies.add(movie)
+            pos = favoriteMovies.indexOf(movie)
+            movieAdapter.notifyItemInserted(pos)
         }
         else {
+            pos = favoriteMovies.indexOf(movie)
             favoriteMovies.remove(movie)
+            movieAdapter.notifyItemRemoved(pos)
         }
-        movieAdapter.notifyDataSetChanged()
     }
 }

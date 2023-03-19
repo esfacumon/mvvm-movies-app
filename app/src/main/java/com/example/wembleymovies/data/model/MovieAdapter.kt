@@ -47,7 +47,13 @@ class MovieAdapter(
 
     override fun onBindViewHolder(viewHolder: MovieAdapter.MovieViewHolder, position: Int) {
         val movie = movies[position]
-        viewHolder.movieTitle.text = movie.title.plus(" (" + movie.releaseDate.subSequence(0, 4) + ")")
+
+        viewHolder.movieTitle.text = if (movie.releaseDate.length >= 4) {
+            movie.title.plus(" (" + movie.releaseDate.subSequence(0, 4) + ")")
+        }
+        else {
+            movie.title
+        }
         viewHolder.movieOverview.text = if(movie.overview.length >= 62) movie.overview.take(59) + "..." else movie.overview
         Picasso.get()
             .load(POSTER_BASE_URL + POSTER_SIZE + movie.posterPath)

@@ -8,14 +8,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
+import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
+import androidx.lifecycle.ViewModelProvider
 import com.example.wembleymovies.data.api.ApiConstants
 import com.example.wembleymovies.data.api.ApiModule
 import com.example.wembleymovies.data.api.ApiService
 import com.example.wembleymovies.data.managers.FavoritesManager
 import com.example.wembleymovies.data.model.Movie
 import com.example.wembleymovies.data.model.MovieAdapter
+import com.example.wembleymovies.data.model.MovieRepository
 import com.example.wembleymovies.data.model.MovieResponse
+import com.example.wembleymovies.data.viewmodel.SearchMoviesViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -36,17 +41,19 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
     private lateinit var movieAdapter: MovieAdapter
     private lateinit var recyclerView: RecyclerView
     private var movies: MutableList<Movie> = mutableListOf()
-
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var searchMoviesViewModel: SearchMoviesViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
+        val movieRepository = MovieRepository(apiService)
+
+        searchMoviesViewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return SearchMoviesViewModel(movieRepository) as T
+            }
+        }).get(SearchMoviesViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -61,6 +68,37 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
         super.onViewCreated(view, savedInstanceState)
         recyclerView = view.findViewById(R.id.recycler_view_search)
         loadPopularMovies(view)
+
+        val searchView = view.findViewById<SearchView>(R.id.search_bar)
+
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (!query.isNullOrEmpty()) {
+                    apiService.searchMovies(ApiConstants.API_KEY, query).enqueue(object : Callback<MovieResponse> {
+                        override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
+                            if (response.isSuccessful) {
+                                val movieResponse: MovieResponse? = response.body()
+                                movies.clear()
+                                // movieResponse?.movies?.let { movies.addAll(it) } // adds all movies got from requests to movies if it's not null
+                                searchMoviesViewModel.searchedMovies.clear()
+                                movieResponse?.movies?.let { searchMoviesViewModel.searchedMovies.addAll(it) }
+                                setupMovieAdapter()
+                            }
+                        }
+
+                        override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
+                            Log.e("API", "Error on api request: ${t.localizedMessage}")
+                        }
+                    })
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(query: String?): Boolean {
+                return false
+            }
+
+        })
     }
 
     private fun loadPopularMovies(view: View) {
@@ -68,14 +106,9 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
             override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
                 if (response.isSuccessful) {
                     val movieResponse: MovieResponse? = response.body()
+                    movies.clear()
                     movieResponse?.movies?.let { movies.addAll(it) } // adds all movies got from requests to movies if it's not null
-
-                    val favoritesManager = FavoritesManager(requireContext())
-                    
-                    movieAdapter = MovieAdapter(movies, favoritesManager, object : MovieAdapter.OnFavoriteClickListener {
-                        override fun onFavoriteClick(movie: Movie, isFavorite: Boolean) { /* empty function in this case */}
-                    })
-                    recyclerView.adapter = movieAdapter
+                    setupMovieAdapter()
                 }
             }
 
@@ -86,44 +119,15 @@ class SearchMoviesFragment : Fragment(R.layout.fragment_search_movies) {
     }
 
 
-    private fun getPopularMovies() {
-        apiService.getPopularMovies(ApiConstants.API_KEY).enqueue(object : Callback<MovieResponse> {
-            override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
-                if (response.isSuccessful) {
-                    val movieReponse: MovieResponse? = response.body()
-                    val movies: List<Movie>? = response.body()?.movies
-                    Log.d("API_TEST", "Encontradas ${movieReponse?.movies?.size} peliculas populares: $movies")
-                    Log.d("MOVIE_RESPONSE", "num de paginas: ${movieReponse?.totalPages}")
+    private fun setupMovieAdapter() {
+        var moviesToShow: List<Movie> = mutableListOf()
+        val favoritesManager = FavoritesManager(requireContext())
 
-                } else {
-                    Log.e("API_TEST", "Error al obtener películas populares: ${response.code()}")
-                }
-            }
+        if (searchMoviesViewModel.searchedMovies.isEmpty()) moviesToShow = movies else moviesToShow = searchMoviesViewModel.searchedMovies
 
-
-            override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
-                Log.e("API_TEST", "Error al llamar a la API: ${t.localizedMessage}")
-            }
+        movieAdapter = MovieAdapter(moviesToShow, favoritesManager, object : MovieAdapter.OnFavoriteClickListener {
+            override fun onFavoriteClick(movie: Movie, isFavorite: Boolean) { /* empty function in this case */}
         })
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SearchMoviesFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SearchMoviesFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        recyclerView.adapter = movieAdapter
     }
 }
